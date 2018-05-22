@@ -1,0 +1,11 @@
+{% load l10n %}{% spaceless %}
+{% if rules %}{% for rule in rules %}{% if rule.comment %}# {{ rule.comment }}{% endif %}
+User-agent: {{ rule.user_agent }}
+{% for url in rule.allowed_urls.all %}Allow: {{ url.pattern|safe }}
+{% endfor %}{% for url in rule.disallowed_urls.all %}Disallow: {{ url.pattern|safe }}
+{% endfor %}{% if rule.crawl_delay %}Crawl-delay: {% localize off %}{{ rule.crawl_delay|floatformat:'0' }}{% endlocalize %}{% endif %}
+{% endfor %}{% else %}
+User-agent: *
+Disallow:
+{% endif %}
+{% endspaceless %}
